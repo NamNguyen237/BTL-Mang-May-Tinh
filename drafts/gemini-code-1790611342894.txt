@@ -1,0 +1,18 @@
+                  [ Internet ISP 1 (VNPT) ]     [ Internet ISP 2 (Viettel) ]
+                               │                             │
+                               └──────────────┬──────────────┘
+                                              │
+                                     [ Router Biên (WAN) ]
+                                              │
+                                   [ Tường lửa / Firewall ]
+                                              │
+                                     [ Core Switch L3 ]
+                                   (Trung tâm định tuyến)
+                                              │
+       ┌───────────────────────┬──────────────┴──────────────┬───────────────────────┐
+       │                       │                             │                       │
+[ Access Switch A1-A2 ] [ Access Switch A2 ] [ Access Switch A3-B1-B2 ] [ Server Switch (Data Center) ]
+  (Khối Hành chính/BGH)  (Khối Giảng đường)   (Lab, Studio, Thư viện)     (10 Máy chủ hệ thống)
+       │                       │                             │                       │
+  ┌────┴────┐             ┌────┴────┐                   ┌────┴────┐             ┌────┴────┐
+ PC  Printer AP          AP (Wi-Fi)                   PC   AP  Cam            DNS  Web  AD
