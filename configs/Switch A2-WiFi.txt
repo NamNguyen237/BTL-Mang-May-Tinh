@@ -1,17 +1,18 @@
-!
-hostname Switch A2-WiFi
-vlan 30
- name PhongMay_TV
+enable
+configure terminal
+
 vlan 40
  name Wifi_GiangDuong
-vlan 60
- name Camera_Printer
-!
+exit
+
+interface range FastEthernet0/1 - 5
+ switchport mode access
+ switchport access vlan 40
+ no shutdown
+
 interface GigabitEthernet0/1
  switchport mode trunk
-!
-interface FastEthernet0/1
- switchport access vlan 40
- switchport mode access
-!
+ no shutdown
+
 end
+write memory

@@ -1,9 +1,10 @@
-!
-hostname Core Switch L3
+enable
+configure terminal
+hostname Core_Switch_L3
 ip routing
-!
+
 vlan 10
- name MGMT
+ name Management
 vlan 20
  name BGH_HanhChinh
 vlan 30
@@ -14,54 +15,40 @@ vlan 50
  name DataCenter
 vlan 60
  name Camera_Printer
-!
-interface Vlan10
+exit
+
+interface vlan 10
  ip address 192.168.10.254 255.255.255.0
-!
-interface Vlan20
+ no shutdown
+
+interface vlan 20
  ip address 192.168.20.254 255.255.255.0
  ip helper-address 192.168.50.3
-!
-interface Vlan30
+ no shutdown
+
+interface vlan 30
  ip address 192.168.31.254 255.255.254.0
  ip helper-address 192.168.50.3
-!
-interface Vlan40
+ no shutdown
+
+interface vlan 40
  ip address 192.168.43.254 255.255.252.0
  ip helper-address 192.168.50.3
-!
-interface Vlan50
+ no shutdown
+
+interface vlan 50
  ip address 192.168.50.254 255.255.255.0
-!
-interface Vlan60
+ no shutdown
+
+interface vlan 60
  ip address 192.168.60.254 255.255.255.0
  ip helper-address 192.168.50.3
-!
-interface GigabitEthernet0/1
-!
-interface GigabitEthernet0/2
+ no shutdown
+
+interface range FastEthernet0/1 - 24, GigabitEthernet0/1 - 2
  switchport trunk encapsulation dot1q
  switchport mode trunk
-!
-interface FastEthernet0/1
- switchport trunk encapsulation dot1q
- switchport mode trunk
-!
-interface FastEthernet0/2
- switchport trunk encapsulation dot1q
- switchport mode trunk
-!
-interface FastEthernet0/3
- switchport trunk encapsulation dot1q
- switchport mode trunk
-!
-interface FastEthernet0/4
- switchport trunk encapsulation dot1q
- switchport mode trunk
-!
-interface FastEthernet0/5
- switchport trunk encapsulation dot1q
- switchport mode trunk
-!
-ip classless
+ no shutdown
+
 end
+write memory

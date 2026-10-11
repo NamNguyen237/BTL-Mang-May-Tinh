@@ -1,17 +1,18 @@
-!
-hostname Switch Camera PoE
-vlan 30
- name PhongMay_TV
-vlan 40
- name Wifi_GiangDuong
+enable
+configure terminal
+
 vlan 60
  name Camera_Printer
-!
+exit
+
+interface range FastEthernet0/1 - 10
+ switchport mode access
+ switchport access vlan 60
+ no shutdown
+
 interface GigabitEthernet0/1
  switchport mode trunk
-!
-interface FastEthernet0/1
- switchport access vlan 60
- switchport mode access
-!
+ no shutdown
+
 end
+write memory
