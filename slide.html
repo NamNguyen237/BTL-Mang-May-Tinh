@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảo Vệ Đồ Án Mạng - Nhóm 7</title>
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #0d1117; color: #c9d1d9; overflow: hidden;
+        }
+        #presentation { position: relative; width: 100%; height: 100%; background: #ffffff; color: #24292e; }
+        #progress-bar { position: absolute; top: 0; left: 0; height: 6px; background: #0366d6; width: 0%; z-index: 1000; transition: width 0.4s ease; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; box-sizing: border-box; padding: 30px 60px; flex-direction: column; }
+        .slide.active { display: flex; animation: slideIn 0.5s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .header { margin-bottom: 20px; border-bottom: 3px solid #e1e4e8; padding-bottom: 10px; }
+        h1 { color: #0366d6; font-size: 2.2em; font-weight: 800; margin: 0; text-transform: uppercase; }
+        h2 { color: #586069; font-size: 1.3em; margin: 5px 0 0 0; font-weight: 600; }
+        
+        .layout-2col { display: flex; gap: 40px; flex-grow: 1; align-items: center; }
+        .col-text { flex: 1.2; font-size: 1.25em; line-height: 1.6; }
+        .col-img { flex: 0.8; display: flex; justify-content: center; align-items: center; background: #f6f8fa; padding: 20px; border-radius: 12px; box-shadow: inset 0 0 10px rgba(0,0,0,0.05); height: 400px; }
+        .col-img svg { width: 100%; height: 100%; }
+        
+        ul { list-style: none; padding: 0; }
+        li { margin-bottom: 15px; position: relative; padding-left: 30px; }
+        li::before { content: '➔'; position: absolute; left: 0; color: #0366d6; font-weight: bold; }
+        strong { color: #24292e; }
+        
+        /* Bìa */
+        .cover-slide { background: radial-gradient(circle at 50% 50%, #0366d6 0%, #0d1117 100%); color: white; justify-content: center; align-items: center; text-align: center; }
+        .cover-slide h1 { color: #ffffff; font-size: 3.5em; margin-bottom: 10px; }
+        .cover-slide h2 { color: #79c0ff; font-size: 1.6em; margin-bottom: 40px; }
+        .author-box { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); }
+        .author-box p { font-size: 1.3em; margin: 10px 0; color: #c9d1d9; }
+        
+        .controls { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); z-index: 100; display: flex; gap: 15px; background: rgba(255,255,255,0.9); padding: 10px 20px; border-radius: 30px; border: 1px solid #e1e4e8; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        button { background-color: #24292e; color: white; border: none; padding: 10px 20px; font-size: 1.1em; cursor: pointer; border-radius: 20px; font-weight: bold; }
+        button:hover { background-color: #0366d6; }
+        .footer-text { position: absolute; bottom: 15px; right: 30px; color: #6a737d; font-weight: 600; }
+        .highlight { background-color: #fff5b1; padding: 2px 6px; border-radius: 4px; color: #b08800; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div id="presentation">
+
+    <!-- SLIDE 1: BÌA -->
+    <div class="slide active cover-slide">
+        <h1>THIẾT KẾ HỆ THỐNG MẠNG</h1>
+        <h2>Trường Học viện Quản lý Giáo dục</h2>
+        <div class="author-box">
+            <p><strong>BÀI TẬP LỚN MÔN MẠNG MÁY TÍNH</strong></p>
+            <p>Nhóm thực hiện: <strong>Nhóm 7</strong></p>
+            <p>Nguyễn Minh Đức - Nguyễn Hồng Nam - Nguyễn Văn Huy</p>
+            <hr style="border-color: rgba(255,255,255,0.2); margin: 15px 0;">
+            <p style="font-size: 1.1em;">Giảng viên hướng dẫn: Phan Văn Tiến</p>
+        </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide">
+        <div class="header">
+            <h1>1. Khảo sát & Phương pháp tiếp cận</h1>
+            <h2>Khung kiến trúc thay vì Đếm số lượng vật lý</h2>
+        </div>
+        <div class="layout-2col">
+            <div class="col-text">
+                <ul>
+                    <li><strong>Giả định kỹ thuật tiêu chuẩn:</strong> Do đặc thù hạn chế tiếp cận thực địa, báo cáo sử dụng giả định quy mô mạng chuẩn cho một cơ sở giáo dục đại học[cite: 23].</li>
+                    <li><strong>Mục tiêu cốt lõi:</strong> Không đi sâu vào đếm từng PC, mà tập trung thiết kế một <strong>Kiến trúc Mạng lõi (Core Framework)</strong> có khả năng chịu tải ~800 thiết bị kết nối đồng thời[cite: 23].</li>
+                    <li><strong>Khả năng co giãn:</strong> Khung kiến trúc phân lớp này cho phép dễ dàng cắm thêm Switch, mở rộng thêm tòa nhà hoặc AP Wi-Fi mà không làm thay đổi hay phá vỡ thiết kế định tuyến của toàn trường[cite: 23].</li>
+                </ul>
+            </div>
+            <div class="col-img">
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="50" y="50" width="300" height="200" fill="none" stroke="#0366d6" stroke-width="4" stroke-dasharray="10 5" rx="10"/>
+                    <text x="200" y="40" font-weight="bold" fill="#24292e" font-size="18" text-anchor="middle">FRAMEWORK ENTERPRISE</text>
+                    <circle cx="120" cy="150" r="40" fill="#2ea043"/>
+                    <circle cx="280" cy="150" r="40" fill="#d73a49"/>
+                    <circle cx="200" cy="220" r="40" fill="#0366d6"/>
+                    <path d="M 150 150 L 250 150 M 130 180 L 180 200 M 270 180 L 220 200" stroke="#24292e" stroke-width="3"/>
+                    <text x="200" y="140" font-weight="bold" fill="#24292e" font-size="16" text-anchor="middle">Scalability</text>
+                </svg>
+            </div>
+        </div>
+        <div class="footer-text">Slide 2 / 13</div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide">
+        <div class="header">
+            <h1>2. Lựa chọn Kiến trúc Mạng & Quản trị</h1>
+            <h2>Loại bỏ Peer-to-Peer, ứng dụng Domain Model</h2>
+        </div>
+        <div class="layout-2col">
+            <div class="col-text">
+                <ul>
+                    <li><strong>Mô hình Client-Server:</strong> Lựa chọn thay thế hoàn toàn mạng Peer-to-Peer (Ngang hàng)[cite: 22, 23]. Dữ liệu E-learning, điểm thi được quản lý tập trung tại Server Room, loại bỏ rủi ro lây nhiễm mã độc toàn trường do chia sẻ file vô tội vạ[cite: 23].</li>
+                    <li><strong>Active Directory (Domain Model):</strong> Quản trị viên quản lý danh bạ tài khoản tập trung[cite: 22, 23].
+                        <ul>
+                            <li>Tự động dùng <strong>GPO</strong> khóa cổng USB 100 máy phòng Lab[cite: 23].</li>
+                            <li>Xác thực <strong>Wi-Fi 802.1X (RADIUS)</strong>: Sinh viên phải nhập ID/Pass cá nhân, chống lộ mật khẩu Wi-Fi ra ngoài[cite: 23].</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-img">
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="150" y="50" width="100" height="150" fill="#0366d6" rx="10"/>
+                    <text x="200" y="130" fill="#fff" font-weight="bold" font-size="20" text-anchor="middle">AD DS</text>
+                    <text x="200" y="150" fill="#fff" font-size="14" text-anchor="middle">Server</text>
+                    <rect x="30" y="220" width="80" height="50" fill="#6a737d" rx="5"/>
+                    <rect x="160" y="220" width="80" height="50" fill="#6a737d" rx="5"/>
+                    <rect x="290" y="220" width="80" height="50" fill="#6a737d" rx="5"/>
+                    <path d="M 200 200 L 70 220 M 200 200 L 200 220 M 200 200 L 330 220" stroke="#0366d6" stroke-width="4"/>
+                    <text x="70" y="250" fill="#fff" text-anchor="middle">Lab PC</text>
+                    <text x="200" y="250" fill="#fff" text-anchor="middle">Wi-Fi</text>
+                    <text x="330" y="250" fill="#fff" text-anchor="middle">Admin</text>
+                </svg>
+            </div>
+        </div>
+        <div class="footer-text">Slide 3 / 13</div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide">
+        <div class="header">
+            <h1>3. Sơ đồ Mạng Vật lý</h1>
+            <h2>Kiến trúc Phân cấp 3 lớp (Collapsed Core)</h2>
+        </div>
+        <div class="layout-2col">
+            <div class="col-text">
+                <ul>
+                    <li><strong>Edge Security (Biên):</strong> Tường lửa FortiGate lọc web, chống mã độc; Router 2911 định tuyến ra WAN[cite: 22, 23].</li>
+                    <li><strong>Collapsed Core (Lõi thu gọn):</strong> Dùng Cisco L3 Switch 3560/3850 gộp chung chức năng Lớp Lõi và Lớp Phân phối[cite: 23]. Đóng vai trò định tuyến Inter-VLAN và làm Gateway cho toàn trường, giúp tiết kiệm chi phí mua sắm[cite: 23].</li>
+                    <li><strong>Access Layer (Truy cập):</strong> Các Switch 24/48-port đặt tại tủ kỹ thuật các tòa A, B nối về Core bằng cáp quang Trunking tốc độ Gigabit/10G[cite: 23].</li>
+                </ul>
+            </div>
+            <div class="col-img">
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="150" y="20" width="100" height="50" fill="#d73a49" rx="5"/>
+                    <text x="200" y="50" fill="#fff" font-weight="bold" text-anchor="middle">EDGE</text>
+                    <rect x="100" y="110" width="200" height="60" fill="#0366d6" rx="5"/>
+                    <text x="200" y="145" fill="#fff" font-weight="bold" font-size="18" text-anchor="middle">CORE L3</text>
+                    <rect x="30" y="230" width="80" height="40" fill="#2ea043" rx="5"/>
+                    <rect x="160" y="230" width="80" height="40" fill="#2ea043" rx="5"/>
+                    <rect x="290" y="230" width="80" height="40" fill="#2ea043" rx="5"/>
+                    <path d="M 200 70 L 200 110" stroke="#586069" stroke-width="4"/>
+                    <path d="M 200 170 L 70 230 M 200 170 L 200 230 M 200 170 L 330 230" stroke="#0366d6" stroke-width="4"/>
+                </svg>
+            </div>
+        </div>
+        <div class="footer-text">Slide 4 / 13</div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide">
+        <div class="header">
+            <h1>4. Quy hoạch VLAN & Công nghệ LAN</h1>
+            <h2>Bảo mật nội bộ & Tối ưu Băng thông</h2>
+        </div>
+        <div class="layout-2col">
+            <div class="col-text">
+                <ul>
+                    <li><strong>Phân vùng VLAN (802.1Q):</strong> Chia 6 vùng logic (MGMT, BGH, Lab, Wi-Fi, Server, Camera) để khoanh vùng sự cố và cách ly dữ liệu Ban giám hiệu với Sinh viên[cite: 22, 23].</li>
+                    <li><strong>Inter-VLAN SVI:</strong> Định tuyến siêu tốc bằng phần cứng thẳng trên Core L3 thay vì dùng Router-on-a-stick truyền thống[cite: 23].</li>
+                    <li><strong>RSTP (802.1w):</strong> Tự động khóa cổng trong < 2 giây nếu sinh viên cắm cáp tạo vòng lặp (Loop), chống sập mạng[cite: 22, 23].</li>
+                    <li><strong>PoE (802.3at):</strong> Switch cấp điện thẳng qua dây mạng Cat6 cho 40 Camera và AP[cite: 23].</li>
+                </ul>
+            </div>
+            <div class="col-img">
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="200" cy="150" r="100" fill="none" stroke="#e1e4e8" stroke-width="4"/>
+                    <path d="M 200 150 L 200 50 A 100 100 0 0 1 300 150 Z" fill="#0366d6"/>
+                    <path d="M 200 150 L 300 150 A 100 100 0 0 1 200 250 Z" fill="#d73a49"/>
+                    <path d="M 200 150 L 200 250 A 100 100 0 0 1 100 150 Z" fill="#2ea043"/>
+                    <path d="M 200 150 L 100 150 A 100 100 0 0 1 200 50 Z" fill="#f9c513"/>
+                    <text x="240" y="110" fill="#fff" font-weight="bold">VLAN 20</text>
+                    <text x="240" y="210" fill="#fff" font-weight="bold">VLAN 30</text>
+                    <text x="140" y="210" fill="#fff" font-weight="bold">VLAN 40</text>
+                    <text x="140" y="110" fill="#fff" font-weight="bold">VLAN 50</text>
+                    <circle cx="200" cy="150" r="40" fill="#fff"/>
+                    <text x="200" y="155" fill="#24292e" font-weight="bold" font-size="12" text-anchor="middle">CORE L3</text>
+                </svg>
+            </div>
+        </div>
+        <div class="footer-text">Slide 5 / 13</div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide">
+        <div class="header">
+            <h1>5. Tối ưu Không gian IP & Subnetting</h1>
+            <h2>Kỹ thuật VLSM & Dual-Stack IPv6</h2>
+        </div>
+        <div class="layout-2col">
+            <div class="col-text">
+                <ul>
+                    <li><strong>Thách thức:</strong> VLAN 40 (Wi-Fi Sinh viên) dự kiến chịu tải ~610 máy. Mạng /24 truyền thống chỉ chứa 254 IP, dẫn đến sập DHCP[cite: 22, 23].</li>
+                    <li><strong>Giải pháp VLSM:</strong> Mượn 2 bit Host để tạo Subnet <span class="highlight">/22</span> (Mask: 255.255.252.0).
+                        <ul>
+                            <li>IP Range: 192.168.40.1 ➔ 192.168.43.254[cite: 23].</li>
+                            <li>Khả năng cấp phát: <strong>1.022 IP khả dụng</strong>, xóa bỏ hoàn toàn nghẽn IP[cite: 23].</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sẵn sàng IPv6:</strong> Áp dụng cơ chế Dual-Stack chạy song song, quy hoạch sẵn tiền tố doanh nghiệp ULA 2001:db8:edu::/48 để đón đầu công nghệ[cite: 22, 23].</li>
+                </ul>
+            </div>
+            <div class="col-img">
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="50" y="80" width="300" height="140" fill="#24292e" rx="10"/>
+                    <text x="200" y="130" fill="#79c0ff" font-family="monospace" font-size="24" font-weight="bold" text-anchor="middle">192.168.40.0 /22</text>
+                    <text x="200" y="160" fill="#2ea043" font-family="monospace" font-size="14" text-anchor="middle">Mask: 255.255.252.0</text>
+                    <text x="200" y="195" fill="#f9c513" font-family="monospace" font-weight="bold" font-size="18" text-anchor="middle">MAX HOSTS: 1,022</text>
+                </svg>
+            </div>
+        </div>
+        <div class="footer-text">Slide 6 / 13</div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide">
+        <div class="header">
+            <h1>6. Bảo mật Edge & Kết nối Internet WAN</h1>
+            <h2>NAT/PAT, Load Balancing & VPN</h2>
+        </div>
+        <div class="layout-2col">
+            <div class="col-text">
+                <ul>
+                    <li><strong>Dynamic PAT (NAT Overload):</strong> Tường lửa biên dịch toàn bộ ~800 IP Private thành chỉ 2 IP Public khi ra mạng[cite: 22, 23]. Giúp tàng hình cấu trúc LAN nội bộ trước tin tặc[cite: 23].</li>
+                    <li><strong>Dual-WAN Load Balancing:</strong>
+                        <ul>
+                            <li>Chạy song song cáp quang VNPT và Viettel[cite: 23].</li>
+                            <li><strong>Auto Failover:</strong> Khi đứt cáp biển VNPT, Tường lửa tự động chuyển 100% traffic sang Viettel trong \< 1 giây, giữ vững hệ thống E-learning[cite: 23].</li>
+                        </ul>
+                    </li>
+                    <li><strong>SSL VPN:</strong> Thiết lập đường ống mã hóa giúp BGH kết nối lấy văn bản an toàn từ xa[cite: 22, 23].</li>
+                </ul>
+            </div>
+            <div class="col-img">
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="150" r="50" fill="#0366d6"/>
+                    <text x="100" y="155" fill="#fff" font-weight="bold" text-anchor="middle">LAN</text>
+                    <rect x="180" y="80" width="40" height="140" fill="#d73a49" rx="5"/>
+                    <text x="200" y="155" fill="#fff" font-weight="bold" font-size="10" transform="rotate(-90, 200, 150)" text-anchor="middle">FIREWALL NAT</text>
+                    <circle cx="300" cy="100" r="40" fill="#2ea043"/>
+                    <text x="300" y="105" fill="#fff" font-weight="bold" font-size="12" text-anchor="middle">ISP 1</text>
+                    <circle cx="300" cy="200" r="40" fill="#f9c513"/>
+                    <text x="300" y="205" fill="#24292e" font-weight="bold" font-size="12" text-anchor="middle">ISP 2</text>
+                    <path d="M 150 150 L 180 150" stroke="#586069" stroke-width="4"/>
+                    <path d="M 220 120 L 260 100 M 220 180 L 260 200" stroke="#586069" stroke-width="4"/>
+                </svg>
+            </div>
+        </div>
+        <div class="footer-text">Slide 7 / 13</div>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="slide">
+        <div class="header">
+            <h1>7. Phân tích Mô hình OSI & TCP/IP</h1>
+            <h2>Tiến trình Sinh viên truy cập Web E-Learning</h2>
+        </div>
+        <div class="layout-2col">
+            <div class="col-text" style="font-size: 1.1em;">
+                <ul>
+                    <li><strong style="color: #0366d6;">Tầng 7 (Ứng dụng):</strong> Khởi tạo HTTP Request & truy vấn phân giải tên miền qua DNS (Port 53 UDP)[cite: 22, 23].</li>
+                    <li><strong style="color: #0366d6;">Tầng 6 (Trình diễn):</strong> Mã hóa gói tin bằng chuẩn SSL/TLS để bảo mật điểm số[cite: 23].</li>
+                    <li><strong style="color: #0366d6;">Tầng 4 (Vận chuyển):</strong> Chọn giao thức TCP (Port 443), thực hiện <strong>Bắt tay 3 bước (3-way Handshake)</strong> để bảo đảm dữ liệu không bị mất[cite: 22, 23].</li>
+                    <li><strong style="color: #0366d6;">Tầng 3 (Mạng):</strong> Đóng gói IP Header (IP Nguồn: Sinh viên, IP Đích: Web Server)[cite: 22, 23].</li>
+                    <li><strong style="color: #0366d6;">Tầng 2 & 1:</strong> Đóng gói Ethernet Frame với MAC Address qua giao thức ARP; chèn thẻ VLAN Tag 40; truyền tín hiệu nhị phân qua sóng vô tuyến 5GHz[cite: 22, 23].</li>
+                </ul>
+            </div>
+            <div class="col-img">
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="50" y="20" width="300" height="30" fill="#0366d6" rx="3"/><text x="200" y="40" fill="#fff" font-weight="bold" font-size="12" text-anchor="middle">L7: APPLICATION (HTTP/DNS)</text>
+                    <rect x="50" y="60" width="300" height="30" fill="#0366d6" rx="3"/><text x="200" y="80" fill="#fff" font-weight="bold" font-size="12" text-anchor="middle">L6: PRESENTATION (SSL/TLS)</text>
+                    <rect x="50" y="100" width="300" height="30" fill="#0366d6" rx="3"/><text x="200" y="120" fill="#fff" font-weight="bold" font-size="12" text-anchor="middle">L5: SESSION</text>
+                    <rect x="50" y="140" width="300" height="30" fill="#2ea043" rx="3"/><text x="200" y="160" fill="#fff" font-weight="bold" font-size="12" text-anchor="middle">L4: TRANSPORT (TCP Segments)</text>
+                    <rect x="50" y="180" width="300" height="30" fill="#d73a49" rx="3"/><text x="200" y="200" fill="#fff" font-weight="bold" font-size="12" text-anchor="middle">L3: NETWORK (IP Packets)</text>
+                    <rect x="50" y="220" width="300" height="30" fill="#f9c513" rx="3"/><text x="200" y="240" fill="#24292e" font-weight="bold" font-size="12" text-anchor="middle">L2: DATA LINK (Frames / ARP)</text>
+                    <rect x="50" y="260" width="300" height="30" fill="#6a737d" rx="3"/><text x="200" y="280" fill="#fff" font-weight="bold" font-size="12" text-anchor="middle">L1: PHYSICAL (Bits / Wi-Fi Waves)</text>
+                </svg>
+            </div>
+        </div>
+        <div class="footer-text">Slide 8 / 13</div>
+    </div>
+
+    <!-- SLIDE 9 -->
+    <div class="slide">
+        <div class="header">
+            <h1>8. Công cụ Quản trị Mạng Chuyên dụng</h1>
+            <h2>Kiểm soát & Chẩn đoán bằng Command Line (CLI)</h2>
+        </div>
+        <div class="layout-2col">
+            <div class="col-text">
+                <ul>
+                    <li><strong>ping (ICMP):</strong> Kiểm tra thông mạng Layer 3 từ máy tính tới Gateway hoặc Server[cite: 22, 23].</li>
+                    <li><strong>tracert:</strong> Dò đường đi của gói tin qua từng Router (Hop) dựa vào chỉ số TTL. Công cụ sống còn để tìm chính xác điểm đứt cáp hoặc nghẽn mạng WAN[cite: 22, 23].</li>
+                    <li><strong>netstat -an:</strong> Liệt kê mọi kết nối TCP/UDP đang mở. Giúp phát hiện máy tính sinh viên bị nhiễm Trojan đang lén kết nối ra máy chủ nước ngoài (Port lạ)[cite: 22, 23].</li>
+                    <li><strong>arp -a:</strong> Xem bảng ánh xạ IP-MAC, dùng để chặn tấn công nghe lén ARP Spoofing nội mạng[cite: 22, 23].</li>
+                </ul>
+            </div>
+            <div class="col-img">
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="20" y="50" width="360" height="200" fill="#0d1117" rx="8" stroke="#586069" stroke-width="3"/>
+                    <circle cx="40" cy="70" r="5" fill="#ff5f56"/>
+                    <circle cx="60" cy="70" r="5" fill="#ffbd2e"/>
+                    <circle cx="80" cy="70" r="5" fill="#27c93f"/>
+                    <text x="35" y="110" fill="#c9d1d9" font-family="monospace" font-size="14">C:\> ping 192.168.10.254</text>
+                    <text x="35" y="140" fill="#2ea043" font-family="monospace" font-size="14">Reply from 192.168.10.254: time=1ms</text>
+                    <text x="35" y="180" fill="#c9d1d9" font-family="monospace" font-size="14">C:\> tracert 8.8.8.8</text>
+                    <text x="35" y="210" fill="#2ea043" font-family="monospace" font-size="14">1  1 ms  192.168.43.254 (Core L3)</text>
+                    <text x="35" y="235" fill="#c9d1d9" font-family="monospace" font-size="14">_</text>
+                </svg>
+            </div>
+        </div>
+        <div class="footer-text">Slide 9 / 13</div>
+    </div>
+
+    <!-- SLIDE 10 -->
+    <div class="slide">
+        <div class="header">
+            <h1>9. Cấu hình & Mô phỏng trên Packet Tracer</h1>
+            <h2>Nghiệm thu Logic Hệ thống</h3>
+        </div>
+        <div class="layout-2col">
+            <div class="col-text">
+                <ul>
+                    <li><strong>Triển khai Cisco CLI:</strong> Nhóm đã dựng hoàn chỉnh sơ đồ mạng vật lý và gõ lệnh cấu hình cho Core L3, Firewall, Access Switch[cite: 22, 23].</li>
+                    <li><strong>Nghiệm thu DHCP Relay:</strong> Cấu hình lệnh <code>ip helper-address 192.168.50.3</code> trên Core Switch L3 thành công[cite: 23]. PC phòng Lab tự động nhận IP chính xác qua các VLAN khác nhau[cite: 23].</li>
+                    <li><strong>Nghiệm thu Định tuyến:</strong> Lệnh Ping từ máy trạm LAN lên máy chủ Web E-learning (VLAN 50) thành công với độ trễ \< 1ms, chứng minh SVI định tuyến hoàn hảo[cite: 22, 23].</li>
+                </ul>
+            </div>
+            <div class="col-img">
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="20" y="20" width="360" height="260" fill="#e1e4e8" rx="8"/>
+                    <rect x="150" y="40" width="100" height="40" fill="#0366d6" rx="4"/>
+                    <rect x="50" y="140" width="80" height="40" fill="#2ea043" rx="4"/>
+                    <rect x="160" y="140" width="80" height="40" fill="#f9c513" rx="4"/>
+                    <rect x="270" y="140" width="80" height="40" fill="#d73a49" rx="4"/>
+                    <path d="M 200 80 L 90 140 M 200 80 L 200 140 M 200 80 L 310 140" stroke="#586069" stroke-width="3"/>
+                    <circle cx="70" cy="220" r="15" fill="#24292e"/><circle cx="110" cy="220" r="15" fill="#24292e"/>
+                    <circle cx="180" cy="220" r="15" fill="#24292e"/><circle cx="220" cy="220" r="15" fill="#24292e"/>
+                    <path d="M 90 180 L 70 205 M 90 180 L 110 205 M 200 180 L 180 205 M 200 180 L 220 205" stroke="#586069" stroke-width="2"/>
+                    <text x="200" y="260" fill="#2ea043" font-weight="bold" font-size="16" text-anchor="middle">DHCP Request Successful</text>
+                </svg>
+            </div>
+        </div>
+        <div class="footer-text">Slide 10 / 13</div>
+    </div>
+
+    <!-- SLIDE 11 -->
+    <div class="slide">
+        <div class="header">
+            <h1>10. Xử lý Sự cố (Troubleshooting)</h1>
+            <h2>Triệt tiêu lỗi Định tuyến lặp (Routing Loop)</h2>
+        </div>
+        <div class="layout-2col">
+            <div class="col-text">
+                <ul>
+                    <li><strong>Tình huống lỗi:</strong> Các máy trạm mất mạng. Lệnh <code>tracert 8.8.8.8</code> cho thấy gói tin chạy vòng tròn giữa Core Switch (Hop 1) và Firewall (Hop 2) đến khi hết TTL thì chết[cite: 22, 23].</li>
+                    <li><strong>Chẩn đoán nguyên nhân:</strong> Firewall bị cấu hình nhầm một dòng Static Route trỏ hướng Default Route (0.0.0.0) về một Next-hop IP không tồn tại. Tường lửa không biết lối ra Internet đành đẩy ngược gói tin về lại Core Switch[cite: 23].</li>
+                    <li><strong>Khắc phục:</strong> Truy cập CLI Tường lửa, dùng lệnh <code>clear configure route</code> xóa tuyến cũ. Khai báo lại chuẩn: <code>route outside 0.0.0.0 0.0.0.0 172.16.10.2</code> (Trỏ thẳng ra Edge Router). Hệ thống lập tức thông mạng[cite: 23].</li>
+                </ul>
+            </div>
+            <div class="col-img">
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="50" y="100" width="100" height="60" fill="#0366d6" rx="5"/><text x="100" y="135" fill="#fff" font-weight="bold" text-anchor="middle">CORE L3</text>
+                    <rect x="250" y="100" width="100" height="60" fill="#d73a49" rx="5"/><text x="300" y="135" fill="#fff" font-weight="bold" text-anchor="middle">FIREWALL</text>
+                    <path d="M 150 120 L 240 120" stroke="#f9c513" stroke-width="4" marker-end="url(#arrow)"/>
+                    <path d="M 240 140 L 150 140" stroke="#f9c513" stroke-width="4" marker-end="url(#arrow)"/>
+                    <text x="200" y="90" fill="#d73a49" font-weight="bold" font-size="18" text-anchor="middle">ROUTING LOOP!</text>
+                    <text x="200" y="180" fill="#586069" font-weight="bold" font-size="14" text-anchor="middle">Gói tin bị kẹt vô tận</text>
+                </svg>
+            </div>
+        </div>
+        <div class="footer-text">Slide 11 / 13</div>
+    </div>
+
+    <!-- SLIDE 12 -->
+    <div class="slide">
+        <div class="header">
+            <h1>11. Đánh giá & Hướng phát triển</h1>
+            <h2>Nền tảng vững chắc cho Chuyển đổi số</h2>
+        </div>
+        <div class="layout-2col">
+            <div class="col-text">
+                <ul>
+                    <li><strong style="color: #2ea043;">Đánh giá Giải pháp:</strong> Đáp ứng xuất sắc khả năng chịu tải ~800 thiết bị. Khắc phục triệt để nguy cơ nghẽn IP bằng Subnetting /22, đảm bảo tính bảo mật và quản lý tập trung với kiến trúc Domain AD DS & VLAN[cite: 22, 23].</li>
+                    <li><strong style="color: #0366d6;">Hướng mở rộng:</strong>
+                        <ul>
+                            <li>Triển khai cụm <strong>Firewall HA (Active/Standby)</strong> chống sập phần cứng Tường lửa[cite: 22, 23].</li>
+                            <li>Nâng cấp từ định tuyến tĩnh sang định tuyến động thông minh <strong>OSPF</strong>[cite: 22, 23].</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-img">
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="200" cy="150" r="80" fill="#2ea043" opacity="0.2"/>
+                    <path d="M 160 150 L 190 180 L 250 110" fill="none" stroke="#2ea043" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+                    <text x="200" y="260" fill="#24292e" font-weight="bold" font-size="20" text-anchor="middle">MỤC TIÊU HOÀN THÀNH</text>
+                </svg>
+            </div>
+        </div>
+        <div class="footer-text">Slide 12 / 13</div>
+    </div>
+
+    <!-- SLIDE 13: CẢM ƠN -->
+    <div class="slide cover-slide">
+        <h1>XIN CHÂN THÀNH CẢM ƠN!</h1>
+        <h2>Thầy và các bạn đã chú ý lắng nghe</h2>
+        <div class="author-box" style="margin-top: 40px; padding: 20px 60px;">
+            <p style="font-size: 2em; color: #79c0ff; font-weight: bold; margin: 0;">Q & A</p>
+            <p style="margin: 10px 0 0 0; font-size: 1.2em;">Mời Thầy và Hội đồng đặt câu hỏi</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="controls">
+    <button onclick="prevSlide()">❮ Trước</button>
+    <button onclick="nextSlide()">Tiếp ❯</button>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const progressBar = document.getElementById('progress-bar');
+
+    function updateProgress() {
+        const progress = (currentSlide / (slides.length - 1)) * 100;
+        progressBar.style.width = progress + '%';
+    }
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.remove('active');
+            if (i === index) slide.classList.add('active');
+        });
+        updateProgress();
+    }
+
+    function nextSlide() {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++; showSlide(currentSlide);
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--; showSlide(currentSlide);
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowRight' || event.key === ' ') nextSlide();
+        else if (event.key === 'ArrowLeft') prevSlide();
+    });
+</script>
+
+</body>
+</html>
