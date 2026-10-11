@@ -1,78 +1,25 @@
-ASA Version 9.6(1)
-!
-hostname ciscoasa
-names
-!
 interface GigabitEthernet1/1
- no nameif
- no security-level
- no ip address
- shutdown
-!
+ nameif inside
+ security-level 100
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+
 interface GigabitEthernet1/2
- no nameif
- no security-level
- no ip address
- shutdown
-!
-interface GigabitEthernet1/3
- no nameif
- no security-level
- no ip address
- shutdown
-!
-interface GigabitEthernet1/4
- no nameif
- no security-level
- no ip address
- shutdown
-!
-interface GigabitEthernet1/5
- no nameif
- no security-level
- no ip address
- shutdown
-!
-interface GigabitEthernet1/6
- no nameif
- no security-level
- no ip address
- shutdown
-!
-interface GigabitEthernet1/7
- no nameif
- no security-level
- no ip address
- shutdown
-!
-interface GigabitEthernet1/8
- no nameif
- no security-level
- no ip address
- shutdown
-!
-interface Management1/1
- management-only
- no nameif
- no security-level
- no ip address
- shutdown
-!
-class-map inspection_default
- match default-inspection-traffic
-!
-policy-map type inspect dns preset_dns_map
- parameters
-  message-length maximum 512
+ nameif outside
+ security-level 0
+ ip address 172.16.10.1 255.255.255.252
+ no shutdown
+
+object network LAN_INSIDE
+ subnet 192.168.0.0 255.255.0.0
+ nat (inside,outside) dynamic interface
+
+route outside 0.0.0.0 0.0.0.0 172.16.10.2
+route inside 192.168.0.0 255.255.0.0 192.168.10.254
+
 policy-map global_policy
  class inspection_default
-  inspect dns preset_dns_map
-  inspect ftp
-  inspect tftp
-!
-service-policy global_policy global
-!
-telnet timeout 5
-ssh timeout 5
-!
+  inspect icmp
+
 end
+write memory
